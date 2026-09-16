@@ -19,10 +19,10 @@ Mỗi người có 17 khớp COCO, mỗi khớp gồm tọa độ và cờ visib
 Lab có **một route bắt buộc**: 20 ảnh `person` COCO-17. Ba bộ dưới đây có vai trò khác nhau;
 không đổi chỗ cho nhau.
 
-| Bộ dữ liệu | Ở đâu | Bạn làm gì | Có train / nộp? |
-| --- | --- | --- | --- |
-| **Core: 20 ảnh chưa nhãn** | `dataset/images/train/` | Tạo một task CVAT `person` 17 điểm, gán tất cả người trong ảnh, export và chuyển thành nhãn YOLO Pose | **Có** |
-| **Test: 10 ảnh đã có nhãn** | `dataset/images/test/`, `dataset/labels/test/` | Chỉ dùng để đánh giá model trong notebook | **Không sửa, không train** |
+| Bộ dữ liệu                  | Ở đâu                                          | Bạn làm gì                                                                                            | Có train / nộp?            |
+| --------------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------- |
+| **Core: 20 ảnh chưa nhãn**  | `dataset/images/train/`                        | Tạo một task CVAT `person` 17 điểm, gán tất cả người trong ảnh, export và chuyển thành nhãn YOLO Pose | **Có**                     |
+| **Test: 10 ảnh đã có nhãn** | `dataset/images/test/`, `dataset/labels/test/` | Chỉ dùng để đánh giá model trong notebook                                                             | **Không sửa, không train** |
 
 Không có bài hand/face trong bản phát hành này. Đừng tự tạo skeleton thứ hai hoặc thêm thư mục
 export thứ hai: repo chưa phát hành input và schema có thể kiểm chứng cho phần đó.
@@ -37,21 +37,21 @@ Sau lab, bạn có thể:
 3. Export đúng **COCO Keypoints 1.0**, và biết đếm 51 (hoặc 56) số để phát hiện export sai.
 4. Đọc **OKS** để tìm lỗi trong nhãn của chính mình, và gọi đúng tên bốn kiểu sai:
    lệch nhẹ, đảo trái/phải, nhầm người, trượt hẳn.
-5. Dùng **visibility report** để phát hiện bất đồng về *guideline* trước khi đi soi từng pixel.
+5. Dùng **visibility report** để phát hiện bất đồng về _guideline_ trước khi đi soi từng pixel.
 6. Fine-tune một model pose trên chính nhãn của mình và giải thích được con số thu được.
 
 ## Bài nộp
 
-| Tệp | Nội dung |
-| --- | --- |
-| `dataset/labels/train/*.txt` | nhãn 20 ảnh train, định dạng Ultralytics YOLO Pose (56 số/dòng) |
-| `annotations/coco_keypoints/person_keypoints_default.json` | đúng bản export **COCO Keypoints 1.0** từ CVAT |
-| `reports/visibility_report.md`, `outputs/visibility_report.json` | bảng đếm cờ theo từng khớp |
-| `GUIDELINE_MINI.md` | quy tắc gán nhãn và các ca mơ hồ của bài làm cá nhân |
-| `outputs/eval_vs_gold.json` | kết quả chấm với gold (sau khi protected release mở) |
-| `outputs/eval_model.json` | số liệu model trước/sau fine-tune, từ notebook |
-| `reports/REPORT.md` | báo cáo, điền từ `reports/REPORT_TEMPLATE.md` |
-| `reports/REVIEWER_CHECKLIST.md` | checklist tự kiểm và ghi chú lỗi đã phát hiện |
+| Tệp                                                              | Nội dung                                                        |
+| ---------------------------------------------------------------- | --------------------------------------------------------------- |
+| `dataset/labels/train/*.txt`                                     | nhãn 20 ảnh train, định dạng Ultralytics YOLO Pose (56 số/dòng) |
+| `annotations/coco_keypoints/person_keypoints_default.json`       | đúng bản export **COCO Keypoints 1.0** từ CVAT                  |
+| `reports/visibility_report.md`, `outputs/visibility_report.json` | bảng đếm cờ theo từng khớp                                      |
+| `GUIDELINE_MINI.md`                                              | quy tắc gán nhãn và các ca mơ hồ của bài làm cá nhân            |
+| `outputs/eval_vs_gold.json`                                      | kết quả chấm với gold (sau khi protected release mở)            |
+| `outputs/eval_model.json`                                        | số liệu model trước/sau fine-tune, từ notebook                  |
+| `reports/REPORT.md`                                              | báo cáo, điền từ `reports/REPORT_TEMPLATE.md`                   |
+| `reports/REVIEWER_CHECKLIST.md`                                  | checklist tự kiểm và ghi chú lỗi đã phát hiện                   |
 
 Đọc [GUIDE.md](GUIDE.md) theo thứ tự thao tác và đối chiếu [RUBRIC.md](RUBRIC.md) trước khi nộp.
 
@@ -119,7 +119,7 @@ python3 tools/evaluate_pose_annotations.py --pred dataset/labels/train \
 ## Một lưu ý về gold - đọc trước khi cãi nhau với điểm số
 
 Gold của lab này lấy từ COCO. COCO dùng `v = 0` cho **cả hai** trường hợp: "ra ngoài
-khung" *và* "người gán nhãn quyết định không gán khớp này". Luật của lớp mình chặt hơn:
+khung" _và_ "người gán nhãn quyết định không gán khớp này". Luật của lớp mình chặt hơn:
 khớp bị che mà còn trong khung thì phải là `v = 1` và vẫn đặt chấm.
 
 Hệ quả, và nó là cố ý:

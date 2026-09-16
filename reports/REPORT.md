@@ -1,14 +1,14 @@
 # Báo cáo Ngày 4 - Keypoint & Pose
 
-Họ tên: cá nhân   Nhóm: cá nhân   Ngày: 2026-09-16
+Họ tên: cá nhân Nhóm: cá nhân Ngày: 2026-09-16
 
 ## 1. Nhãn của tôi
 
-| Chỉ số | Giá trị |
-| --- | ---: |
-| Số ảnh đã gán | 20 |
-| Số skeleton | 29 |
-| v=2 / v=1 / v=0 | 343 / 115 / 35 |
+| Chỉ số                       |                Giá trị |
+| ---------------------------- | ---------------------: |
+| Số ảnh đã gán                |                     20 |
+| Số skeleton                  |                     29 |
+| v=2 / v=1 / v=0              |         343 / 115 / 35 |
 | Thời gian trung bình mỗi ảnh | Không ghi trong output |
 
 Ba khớp có `%v=1` cao nhất theo `outputs/visibility_report.json`:
@@ -21,14 +21,14 @@ Tai trái có tỷ lệ bị che cao nhất. Cổ tay và hông cũng khó xác 
 
 ## 2. Chấm với gold
 
-| Chỉ số | Trước rework | Sau rework |
-| --- | ---: | ---: |
-| OKS trung bình | 0.928 | 0.9305 |
-| OKS@0.50 | 0.966 | 1.000 |
-| OKS@0.75 | 0.931 | 0.9655 |
-| Lỗi `dao_trai_phai` | 0 | 0 |
-| Lỗi `nham_nguoi` | 0 | 0 |
-| Lỗi `xoa_khop_bi_che` | 0 | 0 |
+| Chỉ số                | Trước rework | Sau rework |
+| --------------------- | -----------: | ---------: |
+| OKS trung bình        |        0.928 |     0.9305 |
+| OKS@0.50              |        0.966 |      1.000 |
+| OKS@0.75              |        0.931 |     0.9655 |
+| Lỗi `dao_trai_phai`   |            0 |          0 |
+| Lỗi `nham_nguoi`      |            0 |          0 |
+| Lỗi `xoa_khop_bi_che` |            0 |          0 |
 
 Bản đầu thiếu một người trong `train_13.jpg`. Sau khi đối chiếu gold, đã bổ sung người thứ 3 với đủ 17 điểm. Kết quả sau rework cho thấy `gold_people=29`, `matched_people=29`, `missing_people=0`, `extra_people=0`. Bản cuối còn 15 cảnh báo `lech_nhe`; 66 điểm khác cờ gold và 49 điểm khác gold về visibility không bị trừ OKS theo quy tắc của bài.
 
@@ -36,13 +36,13 @@ Lỗi đảo trái/phải của tôi: không có lỗi được evaluator phân 
 
 ## 3. Model
 
-| Chỉ số | yolo26n-pose gốc | Sau fine-tune | Chênh |
-| --- | ---: | ---: | ---: |
-| pose_mAP50 | 0.8450 | 0.8450 | 0.0000 |
-| pose_mAP50-95 | 0.6853 | 0.6908 | +0.0055 |
-| pose_precision | 0.9734 | 0.9792 | +0.0058 |
-| pose_recall | 0.8462 | 0.8462 | 0.0000 |
-| box_mAP50-95 | 0.8119 | 0.8041 | -0.0078 |
+| Chỉ số         | yolo26n-pose gốc | Sau fine-tune |   Chênh |
+| -------------- | ---------------: | ------------: | ------: |
+| pose_mAP50     |           0.8450 |        0.8450 |  0.0000 |
+| pose_mAP50-95  |           0.6853 |        0.6908 | +0.0055 |
+| pose_precision |           0.9734 |        0.9792 | +0.0058 |
+| pose_recall    |           0.8462 |        0.8462 |  0.0000 |
+| box_mAP50-95   |           0.8119 |        0.8041 | -0.0078 |
 
 ### Trả lời năm câu hỏi ở cuối notebook
 
