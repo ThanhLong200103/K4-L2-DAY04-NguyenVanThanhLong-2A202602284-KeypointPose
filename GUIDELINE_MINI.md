@@ -1,4 +1,4 @@
-# Mini guideline - nhóm: ______  |  người gán: ______  |  ngày: ______
+# Mini guideline - nhóm: **\_\_** | người gán: **\_\_** | ngày: **\_\_**
 
 > Điền file này **trong lúc** gán nhãn, không phải sau khi xong. Mỗi lần bạn dừng lại
 > hơn 10 giây để phân vân, đó là một dòng phải ghi vào đây.
@@ -14,14 +14,14 @@
 
 ## 2. Luật của nhóm bạn (phải điền)
 
-| Tình huống | Luật nhóm bạn chọn | Vì sao |
-| --- | --- | --- |
-| Hông của người mặc quần áo dài | | |
-| Tai bị tóc hoặc mũ bảo hiểm che một phần | | |
-| Người bị cắt ở mép ảnh (chỉ thấy từ hông trở lên) | | |
-| Cổ tay nằm sau tay lái / sau thân mình | | |
-| Hai người chồng lên nhau | | |
-| Người nhỏ đến mức nào thì không gán nữa | | |
+| Tình huống                                        | Luật nhóm bạn chọn | Vì sao |
+| ------------------------------------------------- | ------------------ | ------ |
+| Hông của người mặc quần áo dài                    |                    |        |
+| Tai bị tóc hoặc mũ bảo hiểm che một phần          |                    |        |
+| Người bị cắt ở mép ảnh (chỉ thấy từ hông trở lên) |                    |        |
+| Cổ tay nằm sau tay lái / sau thân mình            |                    |        |
+| Hai người chồng lên nhau                          |                    |        |
+| Người nhỏ đến mức nào thì không gán nữa           |                    |        |
 
 Với mỗi luật, chèn **một ảnh mẫu** (screenshot từ CVAT) thay vì chỉ viết một câu.
 Slide 12 nói rõ: khớp không có bề mặt nhìn thấy được thì phải có ảnh mẫu, không phải
@@ -55,3 +55,13 @@ một câu văn chung chung.
 - Khớp lệch `%v=1` nhiều nhất: `______` (bạn `___%` / họ `___%`)
 - Nguyên nhân là **guideline chưa rõ** hay **một trong hai bên gán sai**:
 - Luật mới bổ sung vào mục 2 sau khi thống nhất:
+
+## Verified self-review - 2026-09-16
+
+- Dataset status: 20 train images, 20 train label files, 28 skeletons.
+- Visibility rule confirmed: use `v = 1` for an occluded joint inside the image; use `v = 0` only when the joint is outside the image.
+- Review case 1: `train_02.txt` has a left/right hip direction warning; inspect hip labels against the visible body orientation.
+- Review case 2: `train_04.txt` has four `v = 0` joints while the person is inside the frame; these are likely occlusion cases.
+- Review case 3: `train_10.txt`, `train_11.txt`, and `train_13.txt` have the same inside-frame `v = 0` warning; inspect before changing labels.
+- The generated overlay is in `outputs/vis_train`; structural validation completed with 20/20 files.
+- Partner comparison is pending because no partner label directory was provided.
