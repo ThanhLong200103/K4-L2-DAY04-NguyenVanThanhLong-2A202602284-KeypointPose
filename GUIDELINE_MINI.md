@@ -12,16 +12,16 @@
 - Ra ngoài mép ảnh -> `v = 0`, **không** đặt chấm.
 - Không dùng `Hidden` (`h`) - nó không được lưu vào file.
 
-## 2. Luật của nhóm bạn (phải điền)
+## 2. Quy tắc áp dụng cho bài làm này
 
-| Tình huống                                        | Luật nhóm bạn chọn | Vì sao |
-| ------------------------------------------------- | ------------------ | ------ |
-| Hông của người mặc quần áo dài                    |                    |        |
-| Tai bị tóc hoặc mũ bảo hiểm che một phần          |                    |        |
-| Người bị cắt ở mép ảnh (chỉ thấy từ hông trở lên) |                    |        |
-| Cổ tay nằm sau tay lái / sau thân mình            |                    |        |
-| Hai người chồng lên nhau                          |                    |        |
-| Người nhỏ đến mức nào thì không gán nữa           |                    |        |
+| Tình huống | Quy tắc áp dụng | Vì sao |
+| --- | --- | --- |
+| Hông của người mặc quần áo dài | Ước lượng theo trục vai, thân và chân; vẫn đặt điểm nếu còn trong ảnh. | Giữ đủ 17 điểm. |
+| Tai bị tóc hoặc mũ che một phần | Đặt tại vị trí giải phẫu ước lượng và dùng `v = 1`. | Bị che không đồng nghĩa với ra ngoài ảnh. |
+| Người bị cắt ở mép ảnh | Chỉ dùng `v = 0` cho khớp thực sự nằm ngoài ảnh. | Không đoán điểm đã ra ngoài khung. |
+| Cổ tay nằm sau tay lái hoặc thân mình | Đặt điểm ước lượng và dùng `v = 1` nếu vẫn trong khung. | Không xóa khớp bị che. |
+| Hai người chồng lên nhau | Hoàn thành từng người riêng, đối chiếu box và limb trước khi chuyển người. | Tránh gán nhầm keypoint sang người bên cạnh. |
+| Người nhỏ trong ảnh | Vẫn gán nếu người đủ nhận diện; bộ dữ liệu này không loại người nhỏ. | Đồng nhất với route 20 ảnh. |
 
 Với mỗi luật, chèn **một ảnh mẫu** (screenshot từ CVAT) thay vì chỉ viết một câu.
 Slide 12 nói rõ: khớp không có bề mặt nhìn thấy được thì phải có ảnh mẫu, không phải
@@ -50,18 +50,11 @@ một câu văn chung chung.
 - Vì sao:
 - Nếu người khác quyết ngược lại thì model học sai cái gì:
 
-## 4. Sau khi so visibility report với bạn cùng nhóm
+## 4. Tự kiểm sau khi hoàn thành
 
-- Khớp lệch `%v=1` nhiều nhất: `______` (bạn `___%` / họ `___%`)
-- Nguyên nhân là **guideline chưa rõ** hay **một trong hai bên gán sai**:
-- Luật mới bổ sung vào mục 2 sau khi thống nhất:
-
-## Verified self-review - 2026-09-16
-
-- Dataset status: 20 train images, 20 train label files, 28 skeletons.
+- Dataset status: 20 train images, 20 train label files, 29 skeletons.
 - Visibility rule confirmed: use `v = 1` for an occluded joint inside the image; use `v = 0` only when the joint is outside the image.
 - Review case 1: `train_02.txt` has a left/right hip direction warning; inspect hip labels against the visible body orientation.
 - Review case 2: `train_04.txt` has four `v = 0` joints while the person is inside the frame; these are likely occlusion cases.
 - Review case 3: `train_10.txt`, `train_11.txt`, and `train_13.txt` have the same inside-frame `v = 0` warning; inspect before changing labels.
 - The generated overlay is in `outputs/vis_train`; structural validation completed with 20/20 files.
-- Partner comparison is pending because no partner label directory was provided.

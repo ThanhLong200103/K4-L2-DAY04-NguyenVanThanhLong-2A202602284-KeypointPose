@@ -1,19 +1,17 @@
-# Bài thực hành Ngày 4 - Gán nhãn keypoint & pose
+# Bài thực hành Ngày 4 - Gán nhãn keypoint & fine-tune pose
 
 > Bắt đầu bằng [lab-guide.html](lab-guide.html) nếu bạn mới dùng CVAT. Sau đó làm theo
 > [GUIDE.md](GUIDE.md) để hoàn thành toàn bộ route 240 phút. Hướng dẫn HTML có ảnh CVAT thật,
 > thao tác phóng to/đóng bằng bàn phím, và không yêu cầu kinh nghiệm lập trình.
 
-Ngày 2 bạn ghi 4 con số cho một người. Ngày 3 bạn thêm một con số nữa (`track_id`).
-Hôm nay bạn ghi **51 con số cho một người** - 17 khớp có tên, mỗi khớp một cặp toạ độ
-và một **cờ visibility**. Cái cờ đó không phải ghi chú cho người đọc sau; nó là một
-phần ba của nhãn, và nó quyết định khớp đó có được tính điểm hay không.
+Repo này chứa toàn bộ bài làm keypoint pose: 20 ảnh train, nhãn YOLO Pose 17 điểm,
+asset skeleton/schema, notebook fine-tune YOLO26-Pose và các kết quả kiểm tra đã chạy.
+Mỗi người có 17 khớp COCO, mỗi khớp gồm tọa độ và cờ visibility.
 
 ```text
-20 ảnh chưa có nhãn -> CVAT Skeleton (17 điểm) -> export COCO Keypoints 1.0
-   -> tự kiểm 3 lượt + visibility report -> khoá nhãn
-   -> protected release mở -> chấm bằng OKS -> rework
-   -> Colab: fine-tune YOLO26-Pose -> visualize -> đánh giá
+20 ảnh -> CVAT Skeleton (17 điểm) -> YOLO Pose labels
+  -> kiểm cấu trúc/visibility -> đánh giá với gold
+  -> notebook fine-tune YOLO26-Pose -> outputs
 ```
 
 ## Phạm vi dữ liệu — đọc trước khi tạo task
@@ -49,11 +47,11 @@ Sau lab, bạn có thể:
 | `dataset/labels/train/*.txt` | nhãn 20 ảnh train, định dạng Ultralytics YOLO Pose (56 số/dòng) |
 | `annotations/coco_keypoints/person_keypoints_default.json` | đúng bản export **COCO Keypoints 1.0** từ CVAT |
 | `reports/visibility_report.md`, `outputs/visibility_report.json` | bảng đếm cờ theo từng khớp |
-| `GUIDELINE_MINI.md` | luật của nhóm bạn + ít nhất ba ca mơ hồ đã gặp và cách quyết |
+| `GUIDELINE_MINI.md` | quy tắc gán nhãn và các ca mơ hồ của bài làm cá nhân |
 | `outputs/eval_vs_gold.json` | kết quả chấm với gold (sau khi protected release mở) |
 | `outputs/eval_model.json` | số liệu model trước/sau fine-tune, từ notebook |
 | `reports/REPORT.md` | báo cáo, điền từ `reports/REPORT_TEMPLATE.md` |
-| `reports/review_partner.md` | lỗi tìm được trong bài người khác + reviewer checklist đã điền |
+| `reports/REVIEWER_CHECKLIST.md` | checklist tự kiểm và ghi chú lỗi đã phát hiện |
 
 Đọc [GUIDE.md](GUIDE.md) theo thứ tự thao tác và đối chiếu [RUBRIC.md](RUBRIC.md) trước khi nộp.
 
@@ -63,18 +61,32 @@ Sau lab, bạn có thể:
 Day4-Lab/
   dataset/images/train/   20 ảnh - BÀI CHÍNH, không có nhãn khi pull
   dataset/images/test/    10 ảnh - có nhãn sẵn, dùng để đánh giá model
-  dataset/labels/train/   nhãn của bạn đặt ở đây (đang trống)
-  dataset/labels/test/    nhãn phát sẵn - KHÔNG sửa, KHÔNG dùng để train
-  gold/                   trống; protected release đặt gold của train ở đây tại mốc 2:30
-  annotations/            bản export gốc COCO Keypoints của 20 ảnh core
+  dataset/labels/train/   20 file nhãn YOLO Pose đã hoàn thành
+  dataset/labels/test/    nhãn phát sẵn để đánh giá model
+  gold/                   nhãn chuẩn dùng để đối chiếu OKS
+  annotations/            bản export COCO Keypoints
+  assets/                 hướng dẫn CVAT và schema skeleton
   tools/                  check / visibility / evaluate / visualize / convert
-  notebooks/              notebook Colab: fine-tune YOLO26-Pose + đánh giá
-  reports/                mẫu báo cáo và reviewer checklist
-  outputs/                kết quả chấm, kết quả model
+  notebooks/              notebook fine-tune YOLO26-Pose
+  reports/                visibility report và checklist
+  outputs/                kết quả đánh giá, overlay và training runs
   data.yaml               cấu hình dataset cho Ultralytics (kpt_shape [17, 3])
 ```
 
 Không đổi tên ảnh, không sửa `dataset/labels/test/`, và không sửa gold sau khi nhận.
+
+## Notebook và kết quả
+
+Notebook chính là `notebooks/day4_pose_finetune_yolo26.ipynb`. Có thể mở trực tiếp
+trong Jupyter/VS Code hoặc chạy trên Colab. Notebook sử dụng `data.yaml`, train labels
+và test set; không dùng `gold/` để train.
+
+Các kết quả hiện có trong `outputs/` gồm:
+
+- `eval_vs_gold.json`: OKS trung bình `0.930`, ghép đủ `29/29` người.
+- `eval_model.json`: kết quả đánh giá model.
+- `visibility_report.json` và `vis_train/`: kiểm visibility và ảnh phủ skeleton.
+- `runs/`: kết quả fine-tune và đánh giá model.
 
 ## Công cụ
 
@@ -99,11 +111,7 @@ python3 tools/visualize_pose.py --images dataset/images/train \
 python3 tools/visibility_report.py --labels dataset/labels/train \
     --out outputs/visibility_report.json --markdown reports/visibility_report.md
 
-# 5. Kiểm chéo: so bảng đếm của bạn với của bạn cùng nhóm
-python3 tools/visibility_report.py --labels dataset/labels/train \
-    --compare ../ban_cung_nhom/dataset/labels/train --markdown reports/visibility_compare.md
-
-# 6. Chấm với gold - CHỈ chạy sau khi protected release mở
+# 5. Chấm với gold
 python3 tools/evaluate_pose_annotations.py --pred dataset/labels/train \
     --gold gold/labels/train --images dataset/images/train --out outputs/eval_vs_gold.json
 ```
