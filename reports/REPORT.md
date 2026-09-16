@@ -1,6 +1,6 @@
 # Báo cáo Ngày 4 - Keypoint & Pose
 
-Họ tên: cá nhân Nhóm: cá nhân Ngày: 2026-09-16
+Họ tên: Nguyễn Văn Thành Long  Ngày: 2026-09-16
 
 ## 1. Nhãn của tôi
 
